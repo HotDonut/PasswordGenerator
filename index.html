@@ -1,0 +1,93 @@
+<script>
+    function validateForm() {
+        event.preventDefault();
+        var flag = true;
+        var fieldCount = passwordForm.getElementsByTagName('input');
+        for (var i = 0; i < fieldCount.length; i++) {
+            // only validate the inputs that have the required attribute
+            if (fieldCount[i].value === "") {
+                // found an empty field that is required
+                fieldCount[i].style.borderColor = "red";
+                flag = false;
+            } else {
+                fieldCount[i].style.borderColor = '';
+            }
+        }
+        if (!flag) {
+            alert("Please fill in all fields!");
+            return false;
+        }
+  
+        if (document.getElementById("IpasswordLength").value < 4 || document.getElementById("IpasswordLength").value > 16) {
+            alert("Choose a password length between 4 and 16");
+            return false;
+        }
+
+        if (document.getElementById("IpasswordNumber").value > 20) {
+            alert("Only 20 passwords can be generated at max");
+            return false;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "server.php",
+            data: {
+                passwordLength: document.getElementById("IpasswordLength").value,
+                passwordNumber: document.getElementById("IpasswordNumber").value,
+                alphabet: document.getElementById("IalphabetUsed").value
+            },
+            success: function (response) {
+                $("#passwordForm").append('<b> Hallo</b>');
+                //insertResult(response);
+
+            }
+        });
+        
+        return true;
+
+    }
+
+
+    function validateNumber(e) {
+        if (!String.fromCharCode(e.keyCode).match(/^[0-9/]/)) {
+            alert("Please enter only digits")
+            return false;
+        }
+    }
+
+</script>
+
+
+<html lang="de">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+    <title>Password-Generator</title>
+</head>
+
+<body>
+    <h1 class="border-bottom text-center">Password Generator</h1>
+    <form id="passwordForm" class="m-2 pt-4 w-75" onsubmit="return validateForm()" method="">
+        <div class="row border w-100">
+            <div class="col">
+                <label id="LpasswordLength" class="m-2">Password Length:</label><br />
+                <label id="LpasswordNumber" class="m-2">Number of passwords generated:</label><br />
+                <label id="Lalphabet" class="m-2">Alphabet used:</label><br />
+            </div>
+            <div class="col">
+                <input name="IpasswordLength" id="IpasswordLength" class="m-1" onkeypress="return validateNumber(event)"><br />
+                <input name="IpasswordNumber" id="IpasswordNumber" class="m-1" onkeypress="return validateNumber(event)"><br />
+                <input name="IalphabetUsed" id="IalphabetUsed" class="m-1"><br />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-secondary btn-lg mt-2"> Generate </button><br />
+    </form>
+
+</body>
+</html>
