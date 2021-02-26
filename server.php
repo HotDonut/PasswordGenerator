@@ -12,7 +12,7 @@ if (isset($_POST['passwordLength']) && isset($_POST['passwordNumber']) && isset(
 	$returnArray['pwLength'] = $pwLength;
 	$returnArray['pwNumber'] = $pwNumber;
 	
-	for ($x = 0; $x <= $pwNumber; $x++){
+	for ($x = 0; $x < $pwNumber; $x++){
 		$returnArray[$x] = $alphabet[rand(0, $upperBound)];
 		for ($y = 1; $y < $pwLength; $y++){
 			$randomNumber = rand(0, $upperBound);

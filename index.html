@@ -37,11 +37,21 @@
                 alphabet: document.getElementById("IalphabetUsed").value
             },
             success: function (response) {
-                response = JSON.parse(response);
+                document.getElementById("resultContainer").innerHTML = '';
+                var data = JSON.parse(response);
                 console.log(response);
-                alert(response);
-                $("#passwordForm").append(response);
-                //insertResult(response);
+                var pwNumber = data["pwNumber"];
+                var pwLength = data["pwLength"];
+                var index = 0;
+
+                var result = '<p><b>' + pwNumber + ' passwords with a length of ' + pwLength + ' were generated:</b></p><br />';
+
+                for(var i=0; i < pwNumber; i++){
+                    index = i + 1;
+                    result += "<b>Password " + index + ": </b>" + data[i] + "<br />";
+                }
+
+                document.getElementById("resultContainer").innerHTML = result;
 
             }
         });
@@ -78,12 +88,12 @@
     <h1 class="border-bottom text-center">Password Generator</h1>
     <form id="passwordForm" class="m-2 pt-4 w-75" onsubmit="return validateForm()" method="">
         <div class="row border w-100">
-            <div class="col">
+            <div class="col-md-auto">
                 <label id="LpasswordLength" class="m-2">Password Length:</label><br />
                 <label id="LpasswordNumber" class="m-2">Number of passwords generated:</label><br />
                 <label id="Lalphabet" class="m-2">Alphabet used:</label><br />
             </div>
-            <div class="col">
+            <div class="col-md-auto">
                 <input name="IpasswordLength" id="IpasswordLength" class="m-1" onkeypress="return validateNumber(event)"><br />
                 <input name="IpasswordNumber" id="IpasswordNumber" class="m-1" onkeypress="return validateNumber(event)"><br />
                 <input name="IalphabetUsed" id="IalphabetUsed" class="m-1"><br />
@@ -91,6 +101,6 @@
         </div>
         <button type="submit" class="btn btn-secondary btn-lg mt-2"> Generate </button><br />
     </form>
-
+    <div class ="m-4 border w-auto" id="resultContainer"></div>
 </body>
 </html>
