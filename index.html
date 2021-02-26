@@ -37,7 +37,10 @@
                 alphabet: document.getElementById("IalphabetUsed").value
             },
             success: function (response) {
-                $("#passwordForm").append('<b> Hallo</b>');
+                response = JSON.parse(response);
+                console.log(response);
+                alert(response);
+                $("#passwordForm").append(response);
                 //insertResult(response);
 
             }
